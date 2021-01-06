@@ -1,0 +1,33 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<script>
+  $(document).ready(function(){
+    $('#id_file').attr("multiple","true");
+
+  })
+ </script>
+<div class="row">
+	<div class="col-md-5">
+		<div class="content-section">
+	
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend>Upload</legend>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>	
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>		
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-home-list' %}">All posts</a>		
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-home-blog' %}">All posts with content</a>						
+				<hr>				
+                {{ form|crispy }}
+			
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Save</button>			
+            </div>
+        </form>
+		</div>
+	</div>
+</div>
+{% endblock content %}

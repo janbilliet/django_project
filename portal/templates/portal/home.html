@@ -1,0 +1,99 @@
+{% extends "portal/base.html" %}
+{% block content %}
+<div class="row">
+	<div class="col-md-9">
+{% load static %}
+<style type="text/css">
+	#myoutercontainer { position:relative }
+	#myinnercontainer { position:absolute; top:50%; height:10em; margin-top:-5em }
+</style>
+<br>
+   <article style="box-shadow: 5px 10px 18px #D8D8D8;margin-bottom: 25px; padding: 25px; border-radius: 0px">
+    <div class="media-body">
+		<div class="row">
+					<div class="col-md-3">
+						<a href="{% url 'portal-home' %}">
+							 <img src="{% static "portal/notes.png" %}" width="60%" >
+						</a>
+					</div>
+					<div class="col-md-8" align="left">
+					<br>
+						<h2 style="color:#565051">myNotes</h2>
+						
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mynotes-home' %}"  style="color: #A4A4A4">Notes&nbsp;</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mynotes-create' %}"  style="color: #A4A4A4">New Note &nbsp;</a>						
+					</div>
+					
+				</div>
+	</div>
+   </article>
+
+   <article style="box-shadow: 5px 10px 18px #D8D8D8;margin-bottom: 25px; padding: 25px; border-radius: 0px;">
+    <div class="media-body">
+				<div class="row">
+					<div class="col-md-3">
+						<a href="{% url 'mykids-home-list' %}">
+							 <img src="{% static "portal/lotte_resized.png" %}" width="60%"">
+						</a>
+					</div>
+					<div class="col-md-9" align="left">
+					<br>
+						<h2 style="color:#565051">myKids</h2>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-home-list' %}"  style="color: #A4A4A4">All posts&nbsp;</a></button>									
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-home-blog' %}"  style="color: #A4A4A4">Posts with content&nbsp;</a></button>			
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-create' %}"  style="color: #A4A4A4">New Post &nbsp;</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-image-upload' %}"  style="color: #A4A4A4">New Image &nbsp;</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-video-upload' %}"  style="color: #A4A4A4">New Video &nbsp;</a></button>						
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-image' %}"  style="color: #A4A4A4">Images</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'mykids-video' %}"  style="color: #A4A4A4">Video</a>	</button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'carousel-image' %}"  style="color: #A4A4A4">Image-Carousel</a>	</button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'carousel-random-video' %}"  style="color: #A4A4A4">Video-Carousel</a>		</button>						
+					</div>
+					
+				</div>
+	</div>
+   </article>
+	
+   <article style="box-shadow: 5px 10px 18px #D8D8D8;margin-bottom: 25px; padding: 25px; border-radius: 0px;">
+    <div class="media-body">
+					<div class="row">
+					<div class="col-md-3">
+						<a href="{% url 'transaction_home' %}">
+							 <img src="{% static "portal/financien.png" %}" width="60%"">
+						</a>
+					</div>
+					<div class="col-md-8" align="left">
+					<br>
+						<h2 style="color:#565051">myFinances</h2>
+						
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'transaction_home' %}"  style="color: #A4A4A4">Summary&nbsp;</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'transaction_add' %}"  style="color: #A4A4A4">New Transaction&nbsp;</a></button>
+					</div>
+	</div>
+   </article>
+   
+   <article style="box-shadow: 5px 10px 18px #D8D8D8;margin-bottom: 25px; padding: 25px; border-radius: 0px;">
+    <div class="media-body">
+						<div class="row">
+					<div class="col-md-3">
+						<a href="{% url 'myhealth_home' %}">
+							 <img src="{% static "portal/gezondheid-geluk.png" %}" width="60%"">
+						</a>
+					</div>
+					<div class="col-md-8" align="left">
+					<br>
+						<h2 style="color:#565051">myHealth</h2>
+						
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'myhealth_home' %}"  style="color: #A4A4A4">Home&nbsp;</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'medication_graphs' %}"  style="color: #A4A4A4">Evolution&nbsp;</a></button>							
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'myhealth_create' %}"  style="color: #A4A4A4">New Consultation&nbsp;</a></button>
+						<button class="tablinks btn btn-light btn-sm mt-1 mb-1"><a href="{% url 'medication_create' %}"  style="color: #A4A4A4">New Medication&nbsp;</a></button>
+
+					</div>		
+	</div>
+   </article>
+
+	</div>
+</div>
+
+{% endblock content %}

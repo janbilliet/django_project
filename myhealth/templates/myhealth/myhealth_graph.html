@@ -1,0 +1,35 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load my_templatetags %}
+
+{% block content %}
+	
+ <div class="row">
+    <div class="col-md-12">
+	<div class="">
+	
+				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myHealth </h3>	
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'myhealth_home' %}">Home</a>	
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'medication_graphs' %}">Graphs</a>		
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'myhealth_create' %}">New Consultation</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'medication_create' %}">New Medication</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'type_add' %}">New Doctor</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'category_add' %}">New Specialism</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'subcategory_add' %}">New Location</a>
+				<hr></hr>	<!-- #horizontal line --> 
+				<br>
+				<div>
+				<center style="font-weight: 500;font-size:15px">Inname salazopyrine</center>		
+					<img src="data:image/png;base64,{{ data1|safe }}" alt=""  >
+				</div>
+
+				<div>
+				<center style="font-weight: 500;font-size:15px">Pijn (0=geen, 1=lichte pijn, 2=pijnlijk, 3=veel pijn)</center>				
+					<img src="data:image/png;base64,{{ data2|safe }}" alt=""  >
+				</div>
+				
+	</div>	
+	</div>	
+</div>
+  {% endblock %}	

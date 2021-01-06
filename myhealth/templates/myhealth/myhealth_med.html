@@ -1,0 +1,186 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load my_templatetags %}
+
+{% block content %}
+	
+ <div class="row">
+    <div class="col-md-12">
+	<div class="">
+	
+				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myHealth </h3>	
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'myhealth_home' %}">Home</a>	
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'medication_graphs' %}">Graphs</a>				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'myhealth_create' %}">New Consultation</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'medication_create' %}">New Medication</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'type_add' %}">New Doctor</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'category_add' %}">New Specialism</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'subcategory_add' %}">New Location</a>
+				<hr></hr>	<!-- #horizontal line --> 
+				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:#8c9da9 ;color:WHITE;border-color:white">Filters</a>		
+				
+				 {% if user.is_authenticated %}
+				 <!-- #filter panel --> 	
+				<div id="filter_div" style="display:normal"> 
+				<div class="">
+				<fieldset class="form-group">	
+					<form method="get" >		
+						  <div class="row">	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.doctor.label_tag }}
+								  {% render_field filter.form.doctor class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.specialism.label_tag }}
+								  {% render_field filter.form.specialism class="form-control" style="font-size:13px"%}
+								</div>
+							</div>	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.location.label_tag }}
+								  {% render_field filter.form.location class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>	
+							<div class="col">						  
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.upsurge.label_tag }}
+								  {% render_field filter.form.upsurge class="form-control" style="font-size:13px"%}
+								</div>  
+							</div>  
+						  </div>
+						<button type="submit" class="btn btn-light btn-sm" style="background-color:lightgrey; color:black">Search</button>
+						<a class="btn btn-light btn-sm" href="{% url 'myhealth_home' %}" style="background-color:lightgrey; color:black">Remove Filters</a>
+
+					</form>				
+			    </fieldset>	
+				</div>
+				</div>
+				<br><br>
+				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleConsultation()" style="background-color:#a0d2eb;color:white;border-color:white">Consultations</a>				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleMedication()" style="background-color:#a0d2eb ;color:white;border-color:white">Medication</a>
+				
+				<!-- #consultation table --> 	
+				<div id="consultation_div" style="display:none"> 		
+				<h3>Consultations</h3>	
+			    <table id="consultationTable" data-order='[[ 1, "d" ]]' data-page-length='25' class="display responsive nowrap table table-bordered" style="max-width:100%">
+				   <thead>
+				      <tr>
+						<th class="all">id</th>
+						<th class="all">Date</th>
+						<th class="all">Title</th>
+						<th class="all">Doctor</th>
+						<th class="all">Specialism</th>
+						<th class="all">Location</th>
+						<th class="none">Description</th>
+				      </tr>
+				   </thead>
+				   <tbody>
+						{% for consultation in consultations %}
+					  <tr>
+						  <td class="all"><a href="{% url 'myhealth_detail' consultation.id %}"  style="font-weight:bold;font-size:14px;color:grey" >  {{ consultation.id }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ consultation.date|date:"Y.m.d" }}</a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ consultation.title|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ consultation.doctor|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" >{{ consultation.specialism|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" >{{ consultation.location|default_if_none:"&nbsp;" }} </a>	</td>						  
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:grey" >{{ consultation.description|default_if_none:"&nbsp;" }} </a>	</td>
+					   </tr>
+					    {% endfor %}
+						
+				   </tbody>
+				   </table>
+				</div>
+				
+				<!-- #medication table --> 	
+				<div id="medication_div" style="display:block"> 			
+				<h3>Medication</h3>					
+			    <table id="medicationTable" data-order='[[ 1, "d" ]]' data-page-length='25' class="display responsive nowrap table table-bordered" style="width:100%">
+				   <thead>
+				      <tr>
+						<th class="all">Start</th>
+						<th class="all">Eind</th>						
+						<th class="all">Medicatie</th>
+						<th class="all">Ochtend</th>
+						<th class="all">Avond</th>
+						<th class="all">Pijn</th>
+						<th class="all">Voet(R)</th>
+						<th class="all">Voet(L)</th>
+						<th class="all">Hand(R)</th>
+						<th class="all">Hand(L)</th>
+						<th class="all">Rug</th>						
+						<th class="none">Opmerking</th>	
+						
+				      </tr>
+				   </thead>
+				   <tbody>
+						{% for medication in medications %}
+					  <tr>
+						  <td class="all"><a href="{% url 'medication_detail' medication.id %}"  style="font-weight:normal;font-size:14px;color:grey" > {{ medication.start_date|date:"Y.m.d" }}</a></td>
+						  <td class="all"><a href="{% url 'medication_detail' medication.id %}"  style="font-weight:normal;font-size:14px;color:grey" > {{ medication.end_date|date:"Y.m.d" }}</a></td>						  
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.medicatie|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.aantal_ochtend|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.aantal_avond|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.pijn|default_if_none:"&nbsp;" }} </a></td>	
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.rechtervoet|yesno:"Ja,-" }} </a></td>	
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.linkervoet|yesno:"Ja,-" }} </a></td>	
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.rechterhand|yesno:"Ja,-" }} </a></td>	
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.linkerhand|yesno:"Ja,-" }} </a></td>	
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.rug|yesno:"Ja,-" }} </a></td>								  
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:grey;max-width:100%" > {{ medication.opmerking|default_if_none:"&nbsp;" }} </a></td>							  
+					   </tr>
+					    {% endfor %}
+						
+
+				   </tbody>
+				   </table>
+				</div>
+					{% endif %}
+</div>	
+	</div>	
+	</div>
+	
+  <script> 
+  $('#consultationTable').dataTable( {
+  "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
+} );
+  </script>
+   <script> 
+  $('#medicationTable').dataTable( {
+  "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
+} );
+  </script>
+  <script> 
+  function toggleFilters() {
+  var x = document.getElementById("filter_div");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+  </script>
+   <script> 
+  function toggleConsultation() {
+  var y = document.getElementById("consultation_div");
+  var x = document.getElementById("medication_div");
+  y.style.display = "block";
+  x.style.display = "none";
+}
+  </script>
+    <script> 
+  function toggleMedication() {
+  var y = document.getElementById("consultation_div");
+  var x = document.getElementById("medication_div");
+  y.style.display = "none";
+  x.style.display = "block";
+}
+  </script>
+	    {% endblock %}	
+</div>
+

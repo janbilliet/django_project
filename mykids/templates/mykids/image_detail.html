@@ -1,0 +1,53 @@
+{% extends "portal/base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-7" style="margin-left: auto; margin-right: auto; width= 100px">
+
+		<div class="container" style="height:25px">
+			<div class="row">
+				 <div class="col text-center">
+					 <ul class="pagination pagination-sm justify-content-center" style="margin:0px">
+						<li class="page-link"><a href="{% url 'mykids-image-detail' object.id|add:'-1' %}" style="font-size:25px">&laquo;</a></li>
+						<li class="page-link"><a href="{% url 'mykids-image-detail' object.id|add:'1' %}" style="font-size:25px">&raquo;</a></li>
+					 </ul>
+				 <br>
+				</div>
+			</div>
+		</div>
+	  
+		<article class="media content-section">
+			<div class="media-body">
+				  <div class="article-metadata">
+				  <br>
+						<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-image-update' object.id %}">Update Foto</a>
+						<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'mykids-image-delete' object.id %}">Delete Foto</a>
+						<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>	
+				  </div>
+
+				  <div  align="left">	
+				    <br>
+					 	{% if object.alltimefav == True %} 
+						<i style="color:grey"> {{ object.id}} - {{object.img}} (All time favourite) </i>
+						{% elif object.fav == True %} 
+						<i style="color:grey"> {{ object.id}} - {{object.img}} (Favourite) </i>
+						{% else %}	
+						<i style="color:grey"> {{ object.id}} - {{object.img}} </i>						
+						{% endif %}
+					<br><br>
+					<p class="article-content"><b>Beschrijving:</b><br> {{ object.desc }}</p>	  		
+					<a href="{{object.img.url}}"><img  class="img-responsive" width='auto' height= '400' src="{{object.img.url}}" align="middle"></a>
+					
+
+						
+				 </div>
+				  
+				  <br>
+
+
+			</div>
+		</article>
+    </div>
+</div>
+{% endblock content %}
+

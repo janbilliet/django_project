@@ -1,0 +1,110 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data" id="postForm" data-categories-url="{% url 'ajax_load_categories' %}" data-subcategories-url="{% url 'ajax_load_subcategories' %}" novalidate>
+            {% csrf_token %}
+			
+				<legend class="border-bottom mb-2">Add or change a transaction</legend>
+				<br><br>
+				
+				<fieldset class="form-group">	
+					
+					<div class="form-group row" style="align:left">
+					     <div class="col">
+							  <label for="id_date" >Date:</label>
+							  {% render_field form.date class="form-control" %}	
+						</div>	
+						<div class="col">						 
+							  <label for="id_date" >Amount:</label>
+							  {% render_field form.amount class="form-control" %}
+						</div>	
+						<div class="col">						 
+							  <label for="id_date" >Name:</label>
+							  {% render_field form.name class="form-control" %}
+						</div>	  		
+					</div>	
+					<br>		
+					<div class="form-group row">
+						<div class="col">
+						  <label for="id_cat">Type:</label>
+						  {% render_field form.type class="form-control"%}
+						</div>
+						<div class="col">
+						  <label for="id_cat">Category:</label>
+						  {% render_field form.category class="form-control"%}
+						</div>
+						<div class="col">
+						  <label for="id_scat">Subcategory:</label>
+						  {% render_field form.subcategory class="form-control" %}
+						</div>
+					</div>		
+					<div class="form-group row">	
+						<div class="col">					
+						<label for="id_desc">Description:</label>
+						{% render_field form.description class="form-control" %}
+						</div>
+					</div>
+					<div class="form-group row">	
+						<div class="col">					
+						<label for="id_desc">Comment:</label>
+						{% render_field form.comment class="form-control" %}
+						</div>
+					</div>
+					
+			    </fieldset>				
+
+				<div class="form-group">
+					<button class="btn btn-outline-info" type="submit">Save</button>
+					<a href="{% url 'transaction_home' %}" class="btn btn-outline-info">Cancel</a>
+				</div>     
+		</form>		
+    </div>
+	</div>
+</div>
+
+<!-- https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html -->
+<!-- This script is used to populate the category dropdown list based on the input in the type field -->
+  <script>
+    $("#id_type").change(function () {
+      var url = $("#postForm").attr("data-categories-url");  // get the url of the `load_categories` view
+      var typeId = $(this).val();  // get the selected type ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-categories/)
+        data: {
+          'type': typeId       // add the type id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_categories` view function
+          $("#id_category").html(data);  // replace the contents of the category input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  
+<!-- https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html -->
+<!-- This script is used to populate the subcategory dropdown list based on the input in the category field -->
+  <script>
+    $("#id_category").change(function () {
+      var url = $("#postForm").attr("data-subcategories-url");  // get the url of the `load_categories` view
+      var categoryId = $(this).val();  // get the selected type ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-categories/)
+        data: {
+          'category': categoryId       // add the type id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_categories` view function
+          $("#id_subcategory").html(data);  // replace the contents of the category input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+  
+{% endblock content %}

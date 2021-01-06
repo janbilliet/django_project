@@ -1,0 +1,22 @@
+{% extends "portal/base.html" %}
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="content-section">
+		
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Delete Video</legend>
+                <h2>Are you sure you want to delete the video "{{ object.Titel }}"</h2>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-danger" type="submit">Yes, go ahead</button>
+                <a class="btn btn-outline-secondary" href="{% url 'mykids-video-detail' object.id %}">Cancel</a>
+            </div>
+        </form>
+        
+		</div>
+	</div>
+</div>
+{% endblock content %}

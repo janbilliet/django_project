@@ -1,0 +1,28 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<script>
+  $(document).ready(function(){
+    $('#id_file').attr("multiple","true");
+
+  })
+ </script>
+<div class="row">
+	<div class="col-md-5">
+		<div class="content-section">
+	
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Picture Upload</legend>
+                {{ form|crispy }}
+			
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Save</button>
+            </div>
+        </form>
+		</div>
+	</div>
+</div>
+{% endblock content %}

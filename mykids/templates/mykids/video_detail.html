@@ -1,0 +1,45 @@
+{% extends "portal/base.html" %}
+{% block content %}
+<div class="row">
+        <div class="col-md-7" style="margin-left: auto; margin-right: auto; width= 100px">
+
+  	 <div class="container" style="height:25px">
+		<div class="row">
+		 <div class="col text-center">
+		 <ul class="pagination pagination-sm justify-content-center" style="margin:0px">
+            <li class="page-link"><a href="{% url 'mykids-video-detail' object.id|add:'-1' %}" style="font-size:25px">&laquo;</a></li>
+            <li class="page-link"><a href="{% url 'mykids-video-detail' object.id|add:'1' %}" style="font-size:25px">&raquo;</a></li>
+		 </ul>
+		 <br>
+		</div>
+     </div>
+    </div>
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+	  <br>
+			<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video-update' object.id %}">Update Video</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'mykids-video-delete' object.id %}">Delete Video</a>
+	  </div>
+
+	  <br>
+	  <div  align="left">
+	  <a href="{{object.file.url}}">
+				<video class="img-responsive" width='auto' height= '200' controls><source src="{{ object.vid.url }}" type="video/mp4"></video>
+	  </a>
+	  </div>
+	  <br><br>
+      <p class="article-content"><b>ID:</b><br> {{ object.id}}</p>
+	  <p class="article-content"><b>Fav:</b><br> {{ object.fav }}</p>
+	  <p class="article-content"><b>All time fav:</b><br> {{ object.alltimefav }}</p>
+	  <p class="article-content"><b>Description:</b><br> {{ object.desc }}</p>	  
+	  <p class="article-content"><b>Name:</b><br> {{ object.file }}</p>
+
+	  </div>
+
+
+  </article>
+    </div>
+</div>
+{% endblock content %}
+

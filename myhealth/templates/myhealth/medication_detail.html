@@ -1,0 +1,28 @@
+{% extends "portal/base.html" %}
+{% block content %}
+
+
+
+	 
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+       <h4 class="mr-2" href="#">{{ object.date }} - {{ object.medicatie }} ({{ object.id }})</h4>
+        <small class="text-muted">{{ object.date |date:"F d, Y" }}</small>
+		   	 <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'medication_update' object.id %}">Update</a>
+			<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'myhealth_home' %}">Back to overview</a>
+			<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'medication_delete' object.id %}">Delete </a></div>
+      </div>
+	  <br>
+      <p class="article-content"><b>Ochtend:</b><br> {{ object.aantal_ochtend }}</p>
+	  <p class="article-content"><b>Avond:</b><br> {{ object.aantal_avond }}</p>
+	  <p class="article-content"><b>Opmerking:</b><br> {{ object.opmerking }}</p>
+	  <p class="article-content"><b>Pijn:</b><br> {{ object.pijn }}</p>
+    </div>
+
+  </article>
+  	
+	 
+  
+{% endblock content %}

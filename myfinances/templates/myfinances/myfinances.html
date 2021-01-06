@@ -1,0 +1,344 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load my_templatetags %}
+{% block content %}
+
+<div class="row">
+<div class="col-md-12" >
+
+				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myFinances </h3>	
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'transaction_add' %}">New Transaction</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'type_add' %}">New Type</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'category_add' %}">New Category</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'subcategory_add' %}">New Subcategory</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'picture_add' %}">Add Picture</a>		
+				<hr></hr>	<!-- #horizontal line --> 
+				
+				<div align="right">
+				   <a  href="{% url 'transaction_cumul_home' %}"style="font-size:10px"> Show cumulative values </a>
+				</div>
+				
+				<div align="left">
+					<img src="data:image/png;base64,{{ data|safe }}" alt="" style="align: left;margin-left: auto; margin-right: auto;" >
+				</div>
+				<br>	
+				<br>
+				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:#8c9da9 ;color:WHITE;border-color:white">Filters</a>		
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleTransaction()" style="background-color:#a0d2eb;color:white;border-color:white">Transaction List</a>				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleSummaryCategory()" style="background-color:#a0d2eb ;color:white;border-color:white">Summary per Category</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleSummaryYear()" style="background-color:#a0d2eb;color:white;border-color:white">Summary per Year</a>				
+				
+							
+				<!-- #filter panel --> 	
+				<br><br>
+				<div id="filter_div" style="display:normal"> 
+				<div class="">
+				<fieldset class="form-group">	
+					<form method="get" id="postForm" data-categories-url="{% url 'ajax_load_categories' %}" data-subcategories-url="{% url 'ajax_load_subcategories' %}" novalidate>		
+						 <div class="row">	
+							<div class="col">						  
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.type.label_tag }}
+								  {% render_field filter.form.type class="form-control" style="font-size:13px"%}
+								</div>  
+							</div>  
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.category.label_tag }}
+								  {% render_field filter.form.category class="form-control" style="font-size:13px"%}
+								</div>
+							</div>	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.subcategory.label_tag }}
+								  {% render_field filter.form.subcategory class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.name.label_tag }}
+								  {% render_field filter.form.name class="form-control" style="font-size:13px"%}
+							    </div>
+						    </div>	
+						 </div>  
+
+						<div class="row">	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  {{ filter.form.description.label_tag }}
+								  {% render_field filter.form.description class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  <label>Year:</label>
+								  {% render_field filter.form.transaction_year class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>							
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  <label>Amount is greater than:</label>
+								  {% render_field filter.form.amount__gt class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>	
+							<div class="col">	
+								<div class="form-group col-sm-40 col-md-30" style="font-size:13px">
+								  <label>Amount is lower than:</label>
+								  {% render_field filter.form.amount__lt class="form-control" style="font-size:13px"%}
+								</div>
+						    </div>								
+						 </div>
+						 
+						<button type="submit" class="btn btn-light btn-sm" style="background-color:lightgrey; color:black">Search</button>
+						<a class="btn btn-light btn-sm" href="{% url 'transaction_home' %}" style="background-color:lightgrey; color:black">Remove Filters</a>
+
+					</form>				
+			    </fieldset>	
+				</div>
+				</div>
+				<br><br>
+				<!-- #filter panel end --> 								
+
+				
+				<!-- #transaction panel --> 							
+				<div id="transactionlist_div">
+				<h4 class="article-title" color="grey"> Transaction list </h4>
+				<small class="article-title" color="lightgrey" style="font-style: italic;"><i> (expenses greater than €500 are hightlighted in red) </i> </small>					
+				<br><br>
+			    <table id="transactionTable" data-order='[[ 1, "d" ]]' data-page-length='25' class="display responsive nowrap table table-bordered" style="width:100%">
+				   <thead>
+				      <tr>
+						<th class="all">id</th>
+						<th class="all">Date</th>
+						<th class="none">Type</th>
+						<th class="all">Category</th>
+						<th class="all">Subcategory</th>
+						<th class="all">Amount</th>
+						<th class="min-desktop">Description</th>
+						<th class="none">Comment</th>						
+						<th class="none">Name</th>
+				      </tr>
+				  </thead>
+				  <tbody>
+						{% for transactie in transacties %}
+						{% if transactie.amount < -500 %}				
+					  <tr>
+						  <td class="all"><a href="{% url 'transaction_detail' transactie.id %}" style="font-weight:bold;font-size:14px;color:#d98880" > {{ transactie.id }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#d98880" > {{ transactie.date|date:"Y.m.d" }}</a></td>
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:#d98880" > {{ transactie.type|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#d98880" > {{ transactie.category|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#d98880" >{{ transactie.subcategory|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#d98880"> {{ transactie.amount|default_if_none:"&nbsp;"|currency }}</a>	</td>
+						  <td class="min-desktop"><a style="font-weight:normal;font-size:14px;color:#d98880" >{{ transactie.description|default_if_none:"&nbsp;" }} </a>	</td>
+                          <td class="none"><a style="font-weight:normal;font-size:14px;color:#d98880" >{{ transactie.comment|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:#d98880" >{{ transactie.name|default_if_none:"&nbsp;" }} </a>	</td>
+					   </tr>
+					   	{% elif transactie.amount > 500 %}				
+					  <tr>
+						  <td class="all"><a href="{% url 'transaction_detail' transactie.id %}" style="font-weight:bold;font-size:14px;color:#2AC014" > {{ transactie.id }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#2AC014" > {{ transactie.date|date:"Y.m.d" }}</a></td>
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:#2AC014" > {{ transactie.type|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#2AC014" > {{ transactie.category|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#2AC014" >{{ transactie.subcategory|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:#2AC014"> {{ transactie.amount|default_if_none:"&nbsp;"|currency }}</a>	</td>
+						  <td class="min-desktop"><a style="font-weight:normal;font-size:14px;color:#2AC014" >{{ transactie.description|default_if_none:"&nbsp;" }} </a>	</td>
+                          <td class="none"><a style="font-weight:normal;font-size:14px;color:#2AC014" >{{ transactie.comment|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:#2AC014" >{{ transactie.name|default_if_none:"&nbsp;" }} </a>	</td>
+					   </tr>
+					    {% else %}				
+					   <tr>
+						  <td class="all"><a href="{% url 'transaction_detail' transactie.id %}" style="font-weight:bold;font-size:14px;color:grey" >  {{ transactie.id }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ transactie.date|date:"Y.m.d" }}</a></td>
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:grey" > {{ transactie.type|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ transactie.category|default_if_none:"&nbsp;" }} </a></td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" >{{ transactie.subcategory|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey"> {{ transactie.amount|default_if_none:"&nbsp;"|currency }}</a>	</td>
+						  <td class="min-desktop"><a style="font-weight:normal;font-size:14px;color:grey" >{{ transactie.description|default_if_none:"&nbsp;" }} </a>	</td>
+                          <td class="none"><a style="font-weight:normal;font-size:14px;color:#d98880" >{{ transactie.comment|default_if_none:"&nbsp;" }} </a>	</td>
+						  <td class="none"><a style="font-weight:normal;font-size:14px;color:grey" >{{ transactie.name|default_if_none:"&nbsp;" }} </a>	</td>
+					   </tr>
+					    {% endif %}
+					    {% endfor %}
+				  </tbody>
+				 </table>
+				 </div>				 
+				<!-- #tranasaction panel end--> 	
+
+				
+				<!-- #summarized per Category --- using to_html method | not usable as long as col_space argument is not working -->	 			
+				<div id="cat_div" style="display:none"> 	
+				<h4 class="article-title" color="grey"> Summary per Category </h4>
+				<br>
+				<table id="table_cat" data-order='[[ 1, "d" ]]' data-page-length='5' class="display responsive nowrap table table-bordered" style="width:50%">
+				   <thead>
+						<th class="all" style="font-weight:bold;font-size:13px;">Category</th>						
+						<th class="all" style="font-weight:bold;font-size:13px;">Net Amount</th>
+						<th class="all" style="font-weight:bold;font-size:13px;">Income</th>
+						<th class="all" style="font-weight:bold;font-size:13px;">Expenses</th>
+				  </thead>	
+				  <tbody>					  
+					 {% for col in summary_category.values %}
+						<tr>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.4 }} </a></td>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.1|currency }}</a></td>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.2|currency }}</a></td>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.3|currency }}</a></td>							
+						</tr>
+					{% endfor %}
+					</tbody>
+				 </table>		
+				 <br><br>
+				 </div>
+
+				 
+				 <!-- summary table end>
+				 
+				<!-- #summarized per Year --- using to_html method | not usable as long as col_space argument is not working -->	 			
+				<div id="year_div" style="display:none"> 	
+				<h4 class="article-title" color="grey"> Summary per Year </h4>
+				<br>
+				<table id="table_year" data-order='[[ 1, "d" ]]' data-page-length='5' class="display responsive nowrap table table-bordered" style="width:50%">
+				   <thead>
+						<th class="all" style="font-weight:bold;font-size:13px;">Year</th>				
+						<th class="all" style="font-weight:bold;font-size:13px;">Net Amount</th>
+						<th class="all" style="font-weight:bold;font-size:13px;">Income</th>
+						<th class="all" style="font-weight:bold;font-size:13px;">Expenses</th>
+				  </thead>	
+				  <tbody>					  
+					 {% for col in summary_year.values %}
+						<tr>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.0 }} </a></td>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.1|currency }}</a></td>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.2|currency }}</a></td>
+						<td class="all" style="font-weight:normal;font-size:13px;" > {{ col.3|currency }}</a></td>	
+						
+						</tr>
+					{% endfor %}
+					</tbody>
+				 </table>		
+				 </div>
+				 <br><br>				 
+				 <!-- summary table end>
+				 
+				 
+				 
+</div>	
+
+	
+<!-- https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html -->
+<!-- This script is used to populate the category dropdown list based on the input in the type field -->
+  <script>
+    $("#id_type").change(function () {
+      var url = $("#postForm").attr("data-categories-url");  // get the url of the `load_categories` view
+      var typeId = $(this).val();  // get the selected type ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-categories/)
+        data: {
+          'type': typeId       // add the type id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_categories` view function
+          $("#id_category").html(data);  // replace the contents of the category input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+  <!-- https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html -->
+<!-- This script is used to populate the subcategory dropdown list based on the input in the category field -->
+  <script>
+    $("#id_category").change(function () {
+      var url = $("#postForm").attr("data-subcategories-url");  // get the url of the `load_categories` view
+      var categoryId = $(this).val();  // get the selected type ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-categories/)
+        data: {
+          'category': categoryId       // add the type id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_categories` view function
+          $("#id_subcategory").html(data);  // replace the contents of the category input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+<!-- This script is used to initialize DataTable plugin -->  
+
+  <script> 
+  $('#transactionTable').dataTable( {
+  "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
+} );
+  </script>
+  
+      <script> 
+    $('#table_cat').dataTable( {
+	  "lengthMenu": [ [3, 5, 10, -1], [3, 5, 10, "All"] ],
+	  "paging": true,
+	   "info": false,
+	   "bFilter": false,
+	      "dom": '<"top"fl>rt<"bottom"><"clear">',
+	   "pagingType": "simple"
+	} );
+  </script>
+  
+  
+    <script> 
+    $('#table_year').dataTable( {
+	  "lengthMenu": [ [3, 5, 10, -1], [3, 5, 10, "All"] ],
+	  "paging": true,
+	   "info": false,
+	   "bFilter": false,
+	      "dom": '<"top"fl>rt<"bottom"><"clear">',
+	   "pagingType": "simple"
+	} );
+  </script>
+  
+  <script> 
+  function toggleFilters() {
+  var x = document.getElementById("filter_div");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+  </script>
+  <script> 
+  function toggleTransaction() {
+  var y = document.getElementById("transactionlist_div");
+  var z = document.getElementById("cat_div");
+  var w = document.getElementById("year_div");
+  y.style.display = "block";
+  z.style.display = "none";
+  w.style.display = "none";  
+}
+  </script>
+    <script> 
+  function toggleSummaryCategory() {
+  var y = document.getElementById("transactionlist_div");
+  var z = document.getElementById("cat_div");
+  var w = document.getElementById("year_div");
+  y.style.display = "none";
+  z.style.display = "block";
+  w.style.display = "none";  
+}
+  </script>
+      <script> 
+  function toggleSummaryYear() {
+  var y = document.getElementById("transactionlist_div");
+  var z = document.getElementById("cat_div");
+  var w = document.getElementById("year_div");
+  y.style.display = "none";
+  z.style.display = "none";
+  w.style.display = "block";  
+}
+  </script>
+    {% endblock %}	
+	
+
+
+
+  	

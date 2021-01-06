@@ -1,0 +1,76 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load my_templatetags %}
+
+
+{% block content %}
+<div class="row">
+        <div class="col-md-12">
+
+     
+	<body> 	  
+	
+	<!-- Pagination -->
+
+  	<!-- <div class="content-section" style="height:83vh">--->
+	<!-- Bootstrap carousel medias -->
+		<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" align="center">
+			<div class="carousel-inner">	
+						{% for i in dagboekposts %}
+							{% if forloop.first %}
+						<div class="carousel-item active" style="height:85vh">
+							  <div class="" color="white">
+								<h3>{{ i.dagboekpost.datum |date:"d.m.Y" }} - {{ i.dagboekpost.titel }} </h3>
+									<small> <a style="color: #a19b9b" href="{% url 'mykids-detail' i.dagboekpost_id %}">Dagboek id: {{ i.dagboekpost_id }}</a> </small> 
+									<small style="color: #a19b9b">|</small> 
+									<small> <a style="color: #a19b9b" href="{% url 'mykids-image-detail' i.id %}">File id: {{ i.id }}</a> </small> 
+									<small style="color: #a19b9b">| Locatie: {{ i.file }} </small>
+									<small style="color: #a19b9b">| {{ i.fav|yesno:"Favoriet,-" }} </small>
+							  </div>						  
+                              <a class="" href="{{i.vid.url}}" align="middle" >
+									<video style="margin-top:10vh" width='200' height= '300' align="center" controls><source src="{{ i.vid.url }}" type="video/mp4"></video>										
+                              </a>
+                        </div>
+							{% else %}
+                        <div class="carousel-item" style="height:85vh">
+							<div class="" color="white">
+								<h3>{{ i.dagboekpost.datum |date:"d.m.Y" }} - {{ i.dagboekpost.titel }} </h3>
+									<small> <a style="color: #a19b9b" href="{% url 'mykids-detail' i.dagboekpost_id %}">Dagboek id: {{ i.dagboekpost_id }}</a> </small> 
+									<small style="color: #a19b9b">|</small> 
+									<small> <a style="color: #a19b9b" href="{% url 'mykids-image-detail' i.id %}">File id: {{ i.id }}</a> </small> 
+									<small style="color: #a19b9b">| Locatie: {{ i.file }} </small>
+									<small style="color: #a19b9b">| {{ i.fav|yesno:"Favoriet,-"  }} </small>
+							  </div>			
+                            <a class="" href="{{i.vid.url}}" align="middle" >
+									<video style="margin-top:10vh" width='200' height= '300' align="center" controls><source src="{{ i.vid.url }}" type="video/mp4"></video>		
+                            </a>
+                       </div>
+					  
+							{% endif %}							
+							
+					  {% endfor %}
+                      </div>
+				<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev" align="center">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next" align="center">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+
+		</div>
+					<br>
+				<div align="center">
+						<a href="{% url 'carousel-favourite-video' %}"  style="color: #a19b9b">10 random videos&nbsp;</a>
+						<a href=""  style="color: #ded9d9">| &nbsp; </a>
+						<a href="{% url 'carousel-favourite-video' %}"  style="color: #a19b9b">10 random favourite videos&nbsp;</a>
+						<a href=""  style="color: #ded9d9" style="color: #a19b9b">| &nbsp; </a>
+						<a href="{% url 'carousel-favourite-video' %}"  style="color: #a19b9b">10 most recent videos&nbsp;</a>
+				</div>
+	</body> 
+   </div>
+</div>
+		
+		   {% endblock  %}  

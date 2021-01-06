@@ -1,0 +1,172 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load my_templatetags %}
+
+
+{% if user.is_authenticated %}
+
+{% block content %}
+ <div class="row">
+    <div class="col-md-12">
+				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myKids ({{ dagboek_list.count }}) </h3>	
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-create' %}">New day</a>
+				<a class="btn btn-warning btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
+				<a class="btn btn-warning btn-sm" href="{% url 'mykids-video-upload' %}">Upload Video</a>							
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>				
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>						
+				<hr></hr>	<!-- #horizontal line --> 
+
+				
+		
+
+	<h4 class="article-title" color="grey"> All posts </h4>
+	<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:white;color:grey;border-color:grey">Filters</a>
+	<br><br>
+					<div id="filter_div" style="display:normal"> 
+				<div class="">
+				<fieldset class="form-group">	
+					<form method="get" >
+					<div class="row">	
+					<div class="col">			  
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.id.label_tag }}
+						  {% render_field filter.form.id class="form-control" style="font-size:12px"%}
+						</div>
+					</div>	
+					<div class="col">		
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.favpost.label_tag }}
+						  {% render_field filter.form.favpost class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">		
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.naam.label_tag }}
+						  {% render_field filter.form.naam class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					</div>
+					<div class="row">	
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.beschrijving.label_tag  }}
+						  {% render_field filter.form.beschrijving class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.titel.label_tag }}
+						  {% render_field filter.form.titel class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">						
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.mijlpaal.label_tag }}
+						  {% render_field filter.form.mijlpaal class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					</div>
+				<button type="submit" class="btn btn-light btn-sm" style="background-color:lightgrey; color:black">Search</button>
+				<a class="btn btn-light btn-sm" href="{% url 'mykids-home-list' %}"  style="background-color:lightgrey; color:black">Remove filters</a>
+
+					</form>	
+			    </fieldset>
+				</div>
+				</div>
+				
+	{% if dagboekposts.has_other_pages %}
+	  <ul class="pagination justify-content-center">
+
+			{% if dagboekposts.has_previous %}
+		  <li class="page-item"><small><a class="page-link" href="?{% param_replace page=1 %}">&laquo;</a></small></li>
+			{% else %}
+		  <li class="page-item"><small><a class="page-link"><span>&laquo;</span></a></small></li>
+			{% endif %}
+			
+				{% for i in dagboekposts.paginator.page_range %}
+					{% if dagboekposts.number == i %}
+				  <li class="page-item"><small><a class="page-link"><span> {{ i }} <span class="sr-only">(current)</span></span></a></small></li>
+					{% else %}
+				  <li class="page-item"><small><a class="page-link" href="?{% param_replace page=i %}"} >{{ i }}  </a></small></li>
+					{% endif %}
+				{% endfor %}
+		
+			{% if dagboekposts.has_next %}
+		  <li class="page-item"><small><a class="page-link" href="?{% param_replace page=dagboekposts.next_page_number %}">&raquo;</a></small></li>
+			{% else %}
+		  <li class="page-item"><small><a class="page-link"><span>&raquo;</span></a></small></li>
+			{% endif %}
+	  </ul>
+
+	    {% endif %}
+					<div align="right">
+					   <a  href="{% url 'mykids-home-blog' %}" style="font-size:10px"> See only posts with content </a>
+					</div>
+<div class="flex-container">
+		<div class="flex-child">	
+		{% for dagboekposts in dagboekposts %}		
+				{% if dagboekposts.favpost == 0 and dagboekposts.beschrijving is not None and dagboekposts.naam_id == 5 %}		
+				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >						
+				 <a class="text-muted"  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
+				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.daglotte }} dagen | {{ dagboekposts.titel|default_if_none:"&nbsp;" }} </a>			 
+				</div>
+				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 5 %}
+				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
+				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px;color:#eb8410" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
+				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#eb8410"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.daglotte }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
+				</div>
+				{% elif dagboekposts.naam_id == 5 %}
+				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
+				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:normal;font-size:14px;color:#A4A4A4" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
+				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#grey"> | ID: {{ dagboekposts.id }}  |  {{ dagboekposts.daglotte }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>					 
+				</div>
+				{% endif %}		
+
+		{% endfor %}				
+		</div>
+
+		<div class="flex-child">	
+			{% for dagboekposts in dagboekposts %}
+				{% if dagboekposts.favpost == 0 and dagboekposts.beschrijving is not None and dagboekposts.naam_id == 7 %}		
+				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >						
+				 <a class="text-muted"  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
+				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
+				</div>
+				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 7 %}
+				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
+				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px;color:#eb8410" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
+				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#eb8410"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
+				</div>
+				{% elif dagboekposts.naam_id == 7 %}
+				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
+				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:normal;font-size:14px;color:#A4A4A4" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
+				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#grey"> | ID: {{ dagboekposts.id }}  |  {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>					 
+				</div>
+				{% endif %}		
+			{% endfor %}
+		</div>	
+</div>		
+
+	</div>
+
+ </div>
+
+
+	  
+  
+  <script> 
+  function toggleFilters() {
+  var x = document.getElementById("filter_div");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+  </script>
+  
+  
+	     {% endblock %}
+
+	  {% endif %}

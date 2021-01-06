@@ -1,0 +1,73 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+    <div class="content-section">
+	
+	<form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+			
+				<legend class="border-bottom mb-4">Update post "{{object.titel}}"</legend>
+				
+				<fieldset class="form-group">	
+					<div class="form-group row">
+						<label for="id_datum" class="col-sm-2 col-form-label">Naam</label>
+						<div class="col-sm-10">
+						{% render_field form.naam class="form-control" %}
+						</div>
+					
+						<label for="id_datum" class="col-sm-2 col-form-label">Datum</label>
+						<div class="col-sm-10">
+						{% render_field form.datum class="form-control" %}
+						</div>
+			
+						<label for="id_titel" class="col-sm-2 col-form-label">Titel</label>
+						<div class="col-sm-10">
+						 {% render_field form.titel class="form-control" %}
+						</div>
+
+						<label for="id_mijlpaal" class="col-sm-2 col-form-label">Mijlpaal</label>
+						<div class="col-sm-10">
+						  {% render_field form.mijlpaal class="form-control" %}
+						</div>
+						
+					</div>	
+					<br>	
+					<div class="form-group row">	
+						<label for="id_beschrijving"></label>
+						{% render_field form.beschrijving class="form-control" %}
+					</div>
+					<br>	
+					<div class="form-group row">
+						<div class="col">
+						  <label for="id_uurvanOpstaan">Wakker geworden om:</label>
+						  {% render_field form.uurvanOpstaan class="form-control" %}
+						  <label for="id_uurvanSlapen">Gaan slapen om:</label>
+						  {% render_field form.uurvanSlapen class="form-control"%}
+						  <label for="id_nachtflesjes">Aantal nachtflesjes:</label>
+						  {% render_field form.nachtflesjes class="form-control" %}
+						</div>
+						<div class="col">
+						  <label for="id_gewicht">Lengte:</label>
+						  {% render_field form.lengte class="form-control" %}
+						  <label for="id_lengte">Gewicht:</label>
+						  {% render_field form.gewicht class="form-control" %}
+						</div>
+					</div>							
+					<div class="form-group">	
+						<label for="id_beschrijving" style="font-style: italic;">Favoriete post</label>
+						{% render_field form.favpost  %}
+						<label for="id_beschrijving" style="font-style: italic;">Sprong</label>
+						{% render_field form.sprong  %}	 
+					</div>					
+			    </fieldset>				
+				<div class="form-group">
+					<button class="btn btn-outline-info" type="submit">Save</button>
+					<a href="{% url 'mykids-home-list' %}" class="btn btn-outline-info">Cancel</a>
+				</div>     
+
+    </form>		
+	
+    </div>
+{% endblock content %}    

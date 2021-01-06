@@ -1,0 +1,132 @@
+{% extends "portal/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% load my_templatetags %}
+{% load thumbnail %}	
+{% if user.is_authenticated %}
+
+{% block content %}
+ <div class="row">
+    <div class="col-md-12">
+				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myKids - Foto ({{ image_list.count }})</h3>	
+				<a class="btn btn-warning btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>						
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-home-list' %}">Journal</a>				
+				<a class="btn btn-secondary btn-sm" href="{% url 'carousel-image' %}">Carousel</a>		
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>					
+				<hr></hr>	<!-- #horizontal line --> 						
+
+	<h4 class="article-title" color="grey">  </h4>
+	<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:white;color:grey;border-color:grey">Filters</a>
+	<br><br>
+					<div id="filter_div" style="display:none"> 
+				<div class="content-section">
+				<fieldset class="form-group">	
+					<form method="get" >
+					<div class="row">	
+					<div class="col">			  
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.id.label_tag }}
+						  {% render_field filter.form.id class="form-control" style="font-size:12px"%}
+						</div>
+					</div>	
+					<div class="col">		
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.fav.label_tag }}
+						  {% render_field filter.form.fav class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">		
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.alltimefav.label_tag }}
+						  {% render_field filter.form.alltimefav class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					</div>
+					<div class="row">	
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.desc.label_tag  }}
+						  {% render_field filter.form.desc class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.dagboekpost.label_tag }}
+						  {% render_field filter.form.dagboekpost class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">						
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.type.label_tag }}
+						  {% render_field filter.form.type class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					</div>
+				<button type="submit" class="btn btn-light btn-sm" style="background-color:lightgrey; color:black">Search</button>
+				<a class="btn btn-light btn-sm" href="{% url 'mykids-image' %}"  style="background-color:lightgrey; color:black">Remove filters</a>
+
+					</form>	
+			    </fieldset>
+				</div>
+				</div>
+	
+	{% if imagefiles.has_other_pages %}
+	  <ul class="pagination justify-content-center">
+
+			{% if imagefiles.has_previous %}
+		  <li class="page-item"><small><a class="page-link" href="?{% param_replace page=1 %}">&laquo;</a></small></li>
+			{% else %}
+		  <li class="page-item"><small><a class="page-link"><span>&laquo;</span></a></small></li>
+			{% endif %}
+			
+				{% for i in imagefiles.paginator.page_range %}
+					{% if imagefiles.number == i %}
+				  <li class="page-item"><small><a class="page-link"><span> {{ i }} <span class="sr-only">(current)</span></span></a></small></li>
+					{% else %}
+				  <li class="page-item"><small><a class="page-link" href="?{% param_replace page=i %}"} >{{ i }}  </a></small></li>
+					{% endif %}
+				{% endfor %}
+		
+			{% if imagefiles.has_next %}
+		  <li class="page-item"><small><a class="page-link" href="?{% param_replace page=mediafiles.next_page_number %}">&raquo;</a></small></li>
+			{% else %}
+		  <li class="page-item"><small><a class="page-link"><span>&raquo;</span></a></small></li>
+			{% endif %}
+	  </ul>
+
+	    {% endif %}
+
+			<article class="" style="background-color: #ffffff">
+
+			{% for i in imagefiles %}
+				<a href="{% url 'mykids-image-detail' i.id %}"> 
+							<img  style="height:10vh; margin-top:5px" class="mh-100" src="{{i.img_thumbnail.url}}" >
+				</a>
+			{% endfor %}
+	
+			</article>
+	<br><br>
+		
+
+	</div>
+
+ </div>
+
+
+	  
+  
+  <script> 
+  function toggleFilters() {
+  var x = document.getElementById("filter_div");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+  </script>
+  
+  
+	     {% endblock %}
+
+	  {% endif %}
