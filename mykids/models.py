@@ -7,13 +7,34 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill,ResizeToFit,SmartResize
 import datetime
 
+
+class Mijlpaal(models.Model):
+    name = models.CharField(max_length=30, null=True)
+
+    class Meta: 
+	    ordering = ('id',)
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('mykids-home-list')	
+
+class Tag(models.Model):
+    name = models.CharField(max_length=30, null=True)
+
+    class Meta: 
+	    ordering = ('id',)
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('mykids-home-list')	
+
 class DagboekPost(models.Model):
     datum = models.DateField(default=timezone.now)
     SprongChoices = (
         ('S', 'Yes'),
         ('-', 'No'),
     )
-    mijlpaal = models.CharField(blank=True,null=True,max_length=100)	
+    mijlpaal = models.ForeignKey(Mijlpaal, on_delete=models.SET_NULL, null=True)
     sprong = models.BooleanField("Sprong", default=False)
     titel = models.CharField(blank=True,null=True,max_length=100)
     beschrijving = models.CharField(blank=True,null=True,max_length=7000)
@@ -23,7 +44,7 @@ class DagboekPost(models.Model):
     uurvanSlapen = models.DateTimeField(blank=True,null=True,default=timezone.now,verbose_name='Gaan slapen om:')
     favpost = models.BooleanField("Favoriete post",default=False)
     nachtflesjes = models.IntegerField(blank=True,null=True,verbose_name='Aantal nachtflesjes:',default=0)
-    naam = models.ForeignKey(User, on_delete=models.CASCADE,default=5)
+    tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True)
 
     def count_days_lotte(self):
         return (self.datum - datetime.date(2019, 4, 22)).days + 1
@@ -35,7 +56,7 @@ class DagboekPost(models.Model):
     dagbolleke = property(count_days_bolleke)		
 	
     class Meta: 
-        ordering = ('-id',)
+        ordering = ('-datum',)
     def __str__(self):
     	return str(self.id)
     def get_absolute_url(self):
@@ -43,7 +64,7 @@ class DagboekPost(models.Model):
 
 
 def generate_filename(self, filename):
-    url = "mykids/%s/%s" % (self.name.username, filename)
+    url = "mykids/%s/%s" % (self.tag, filename)
     return url		
 	
 class Video(models.Model):

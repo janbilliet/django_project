@@ -121,8 +121,8 @@
 				   <tbody>
 						{% for medication in medications %}
 					  <tr>
-						  <td class="all"><a href="{% url 'medication_detail' medication.id %}"  style="font-weight:normal;font-size:14px;color:grey" > {{ medication.start_date|date:"Y.m.d" }}</a></td>
-						  <td class="all"><a href="{% url 'medication_detail' medication.id %}"  style="font-weight:normal;font-size:14px;color:grey" > {{ medication.end_date|date:"Y.m.d" }}</a></td>						  
+						  <td class="all"><a href="{% url 'medication_detail' medication.id %}"  style="font-weight:normal;font-size:14px;color:grey" > {{ medication.start_date|date:"Y.m" }}</a></td>
+						  <td class="all"><a href="{% url 'medication_detail' medication.id %}"  style="font-weight:normal;font-size:14px;color:grey" > {{ medication.end_date|date:"Y.m" }}</a></td>						  
 						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.medicatie|default_if_none:"&nbsp;" }} </a></td>
 						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.aantal_ochtend|default_if_none:"&nbsp;" }} </a></td>
 						  <td class="all"><a style="font-weight:normal;font-size:14px;color:grey" > {{ medication.aantal_avond|default_if_none:"&nbsp;" }} </a></td>

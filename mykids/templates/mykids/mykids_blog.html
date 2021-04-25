@@ -11,10 +11,11 @@
     <div class="col-md-12">
 				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myKids ({{ dagboek_list.count }})</h3>	
 				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-create' %}">New day</a>
-				<a class="btn btn-warning btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
-				<a class="btn btn-warning btn-sm" href="{% url 'mykids-video-upload' %}">Upload Video</a>							
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'milestone_add' %}">New milestone</a>				
+				<a class="btn btn-info btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
+				<a class="btn btn-info btn-sm" href="{% url 'mykids-video-upload' %}">Upload Video</a>							
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>				
-				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>		
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>					
 				<hr></hr>	<!-- #horizontal line --> 
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:white;color:grey;border-color:grey">Filters</a>		
 				<br><br>
@@ -37,8 +38,8 @@
 					</div>
 					<div class="col">		
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.naam.label_tag }}
-						  {% render_field filter.form.naam class="form-control" style="font-size:12px"%}
+						  {{ filter.form.tag.label_tag }}
+						  {% render_field filter.form.tag class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
 					</div>
@@ -105,7 +106,7 @@
 
 			{% if dagboekposts.beschrijving is None %}
 
-			{% elif dagboekposts.favpost == 0 and dagboekposts.naam_id == 5 %}				
+			{% elif dagboekposts.favpost == 0 and dagboekposts.tag_id == 1 %}				
 			<article class="media content-section" style="background-color: #ecf2f9;border-color:#8cb3d9;border-width: 0.01ex">
 			  <div class="media-body" >
 				<div class="article-metadata">			
@@ -116,7 +117,7 @@
 			  </div>
 			</article>
 			
-			{% elif dagboekposts.favpost == 0 and dagboekposts.naam_id == 7 %}				
+			{% elif dagboekposts.favpost == 0 and dagboekposts.tag_id == 2 %}				
 			<article class="media content-section" style="background-color: #ecf2f9;border-color:#8cb3d9;border-width: 0.01ex">
 			  <div class="media-body" >
 				<div class="article-metadata">			
