@@ -1,4 +1,4 @@
-from .models import DagboekPost, Video, Image
+from .models import DagboekPost, Video, Image, Mijlpaal, Tag
 from django import forms
 from django.forms import ModelForm, Textarea
 from .widgets import BootstrapDateTimePickerInput
@@ -13,7 +13,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = DagboekPost
-        fields = ['id','datum','titel','mijlpaal','beschrijving','favpost','sprong','uurvanOpstaan','uurvanSlapen','nachtflesjes','lengte','gewicht','naam']
+        fields = ['id','datum','titel','mijlpaal','beschrijving','favpost','sprong','uurvanOpstaan','uurvanSlapen','nachtflesjes','lengte','gewicht','tag']
         widgets = {
         'beschrijving': Textarea(attrs={'cols': 80, 'rows': 5}),
         'datum': forms.DateInput(format=('%Y-%m-%d'), attrs={'firstDay': 1, 'pattern=': '\d{4}-\d{2}-\d{2}', 'lang': 'pl', 'format': 'yyyy-mm-dd', 'type': 'date'}),		
@@ -32,3 +32,13 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ['name','dagboekpost','order','img','desc','fav','alltimefav']
+
+class MijlpaalForm(forms.ModelForm):
+    class Meta:
+        model = Mijlpaal
+        fields = ['name']
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['name']

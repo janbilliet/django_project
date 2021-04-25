@@ -9,7 +9,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = DagboekPost
-        fields = ['id','datum','titel', 'mijlpaal','sprong','titel','beschrijving','favpost','naam']
+        fields = ['id','datum','titel', 'mijlpaal','sprong','titel','beschrijving','favpost','tag']
 		
 class ImageForm(forms.ModelForm):
 

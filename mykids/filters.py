@@ -46,7 +46,7 @@ class DagboekFilter(django_filters.FilterSet):
 
 	class Meta:
 			model = DagboekPost
-			fields =  ['id','mijlpaal','sprong','titel','beschrijving','favpost','naam']
+			fields =  ['id','mijlpaal','sprong','titel','beschrijving','favpost','tag']
 			filter_overrides = {
 					 models.CharField: {
                  'filter_class': django_filters.CharFilter,

@@ -11,7 +11,8 @@ from .views import (
     ImageDeleteView,
     VideoDeleteView,
     ImageFieldView,
-    VideoFieldView
+    VideoFieldView,
+    MijlpaalCreateView
 )
 from . import views
 from django.conf.urls import include, url
@@ -39,4 +40,5 @@ urlpatterns = [
     path('mykids/video/random', views.carousel_random_video, name = 'carousel-random-video'),	
     path('mykids/video/favourite', views.carousel_favourite_video, name = 'carousel-favourite-video'),	
     path('mykids/graph/', views.showchart, name = 'mykids-chart'),
+	path('mykids/new/milestone', views.MijlpaalCreateView.as_view(), name='milestone_add'),
 ]

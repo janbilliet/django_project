@@ -11,8 +11,9 @@
     <div class="col-md-12">
 				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myKids ({{ dagboek_list.count }}) </h3>	
 				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-create' %}">New day</a>
-				<a class="btn btn-warning btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
-				<a class="btn btn-warning btn-sm" href="{% url 'mykids-video-upload' %}">Upload Video</a>							
+				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'milestone_add' %}">New milestone</a>				
+				<a class="btn btn-info btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
+				<a class="btn btn-info btn-sm" href="{% url 'mykids-video-upload' %}">Upload Video</a>							
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>				
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>						
 				<hr></hr>	<!-- #horizontal line --> 
@@ -42,8 +43,8 @@
 					</div>
 					<div class="col">		
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.naam.label_tag }}
-						  {% render_field filter.form.naam class="form-control" style="font-size:12px"%}
+						  {{ filter.form.tag.label_tag }}
+						  {% render_field filter.form.tag class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
 					</div>
@@ -105,13 +106,14 @@
 					</div>
 <div class="flex-container">
 		<div class="flex-child">	
+		<h4 class="article-title" color="grey"> Lotte </h4>	<br>
 		{% for dagboekposts in dagboekposts %}		
-				{% if dagboekposts.favpost == 0 and dagboekposts.beschrijving is not None and dagboekposts.naam_id == 5 %}		
+				{% if dagboekposts.favpost == 0 and dagboekposts.beschrijving is not None and dagboekposts.tag_id == 1 %}		
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >						
 				 <a class="text-muted"  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.daglotte }} dagen | {{ dagboekposts.titel|default_if_none:"&nbsp;" }} </a>			 
 				</div>
-				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 5 %}
+				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 1 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px;color:#eb8410" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#eb8410"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.daglotte }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
@@ -127,18 +129,19 @@
 		</div>
 
 		<div class="flex-child">	
-			{% for dagboekposts in dagboekposts %}
-				{% if dagboekposts.favpost == 0 and dagboekposts.beschrijving is not None and dagboekposts.naam_id == 7 %}		
+			<h4 class="article-title" color="grey"> Merlijn </h4>	<br>				
+			{% for dagboekposts in dagboekposts %}		
+				{% if dagboekposts.favpost == 0 and dagboekposts.beschrijving is not None and dagboekposts.tag_id == 2 %}		
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >						
 				 <a class="text-muted"  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
 				</div>
-				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 7 %}
+				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 2 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px;color:#eb8410" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#eb8410"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
 				</div>
-				{% elif dagboekposts.naam_id == 7 %}
+				{% elif dagboekposts.naam_id == 2 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:normal;font-size:14px;color:#A4A4A4" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#grey"> | ID: {{ dagboekposts.id }}  |  {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>					 
@@ -146,6 +149,7 @@
 				{% endif %}		
 			{% endfor %}
 		</div>	
+		
 </div>		
 
 	</div>

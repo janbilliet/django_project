@@ -1,5 +1,5 @@
-from .models import DagboekPost, Video, Image
-from .forms import PostForm, VideoForm, ImageForm
+from .models import DagboekPost, Video, Image, Mijlpaal, Tag
+from .forms import PostForm, VideoForm, ImageForm, MijlpaalForm, TagForm
 from .filters import DagboekFilter, VideoFilter, ImageFilter
 from django.shortcuts import render
 from django_filters.views import FilterView
@@ -18,7 +18,6 @@ from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-
 from django.core.paginator import Paginator
 from django.template import Library
 from django.http import HttpResponse
@@ -168,11 +167,11 @@ class ImageFieldView(FormView):
             dagboekpost = form.cleaned_data['dagboekpost']
             fav = form.cleaned_data['fav']
             alltimefav = form.cleaned_data['alltimefav']
-            name = form.cleaned_data['name']
+            tag = form.cleaned_data['tag']
             i=0
             for f in files:
                 i+=1
-                instance = Image(img=f,dagboekpost=dagboekpost,order=i,desc=desc,name=name,alltimefav=alltimefav,fav=fav)
+                instance = Image(img=f,dagboekpost=dagboekpost,order=i,desc=desc,tag=tag,alltimefav=alltimefav,fav=fav)
                 instance.save()    
             return redirect(self.success_url)
         else:
@@ -195,11 +194,11 @@ class VideoFieldView(FormView):
             dagboekpost = form.cleaned_data['dagboekpost']
             fav = form.cleaned_data['fav']
             alltimefav = form.cleaned_data['alltimefav']
-            name = form.cleaned_data['name']
+            tag = form.cleaned_data['tag']
             i=0
             for f in files:
                 i+=1
-                instance = Video(vid=f,dagboekpost=dagboekpost,order=i,desc=desc,name=name,alltimefav=alltimefav,fav=fav)
+                instance = Video(vid=f,dagboekpost=dagboekpost,order=i,desc=desc,tag=tag,alltimefav=alltimefav,fav=fav)
                 instance.save()    
             return redirect(self.success_url)
         else:
@@ -344,7 +343,6 @@ def showchart(request):
     uri = urllib.parse.quote(string)
     return render(request,'mykids/chart_evolutie.html',{'data':uri})		
 	
-
 def carousel_random_video(request): 
 			dagboekposts = Video.objects.select_related('dagboekpost').order_by('?').all()[:10]
 			context = {	
@@ -378,3 +376,7 @@ def carousel_image(request):
 				'dagboekposts_alltime_favourite': dagboekposts_alltime_favourite,				
 			}
 			return render(request, 'mykids/image_carousel.html', context)
+
+class MijlpaalCreateView(CreateView):
+    model = Mijlpaal
+    form_class = MijlpaalForm
