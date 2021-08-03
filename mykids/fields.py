@@ -15,10 +15,10 @@ class ImageForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['img','favimage','dagboekpost','name']
+        fields = ['img','favimage','dagboekpost','tag']
 		
 class VideoForm(forms.ModelForm):
 
     class Meta:
         model = Video
-        fields = ['vid','favvideo','dagboekpost','name']
+        fields = ['vid','favvideo','dagboekpost','tag']

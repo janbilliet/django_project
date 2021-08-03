@@ -24,14 +24,14 @@ class VideoForm(forms.ModelForm):
 	
     class Meta:
         model = Video
-        fields = ['name','dagboekpost','order','desc','vid','fav','alltimefav']
+        fields = ['tag','dagboekpost','order','desc','vid','fav','alltimefav']
 		
 class ImageForm(forms.ModelForm):
     img = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 	
     class Meta:
         model = Image
-        fields = ['name','dagboekpost','order','img','desc','fav','alltimefav']
+        fields = ['tag','dagboekpost','order','img','desc','fav','alltimefav']
 
 class MijlpaalForm(forms.ModelForm):
     class Meta:

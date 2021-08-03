@@ -113,12 +113,12 @@
 				 <a class="text-muted"  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.daglotte }} dagen | {{ dagboekposts.titel|default_if_none:"&nbsp;" }} </a>			 
 				</div>
-				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 1 %}
+				{% elif dagboekposts.favpost == 1 and dagboekposts.tag_id == 1 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px;color:#eb8410" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#eb8410"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.daglotte }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
 				</div>
-				{% elif dagboekposts.naam_id == 5 %}
+				{% elif dagboekposts.tag_id == 1 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:normal;font-size:14px;color:#A4A4A4" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#grey"> | ID: {{ dagboekposts.id }}  |  {{ dagboekposts.daglotte }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>					 
@@ -136,12 +136,12 @@
 				 <a class="text-muted"  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
 				</div>
-				{% elif dagboekposts.favpost == 1 and dagboekposts.naam_id == 2 %}
+				{% elif dagboekposts.favpost == 1 and dagboekposts.tag_id == 2 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:bold;font-size:14px;color:#eb8410" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#eb8410"> | ID: {{ dagboekposts.id }} | {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>			 
 				</div>
-				{% elif dagboekposts.naam_id == 2 %}
+				{% elif dagboekposts.tag_id == 2 %}
 				<div class="" style="border-bottom-style:solid; border-bottom-width:1px; border-bottom-color: #E8E8E8;  background-color: white; padding-bottom:3px" >		
 				 <a  href="{% url 'mykids-detail' dagboekposts.id %}" style="font-weight:normal;font-size:14px;color:#A4A4A4" > {{ dagboekposts.datum|date:"d/m/y" }} </a>
 				 <a  class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}" style="font-size:14px;color:#grey"> | ID: {{ dagboekposts.id }}  |  {{ dagboekposts.dagbolleke }} dagen  | {{ dagboekposts.titel|default_if_none:"&nbsp;" }}  </a>					 
