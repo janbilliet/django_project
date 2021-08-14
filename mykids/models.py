@@ -50,7 +50,7 @@ class DagboekPost(models.Model):
         return (self.datum - datetime.date(2019, 4, 22)).days + 1
 		
     def count_days_bolleke(self):
-        return (self.datum - datetime.date(2021, 6, 1)).days + 1
+        return (self.datum - datetime.date(2021, 6, 7)).days + 1
     
     daglotte = property(count_days_lotte)	
     dagbolleke = property(count_days_bolleke)		
@@ -74,7 +74,7 @@ class Video(models.Model):
     alltimefav = models.BooleanField("All time fav",default=False)
     desc = models.CharField(blank=True,null=True,max_length=7000)
     order = models.IntegerField(blank=True,null=True,default=1)
-    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True)
 	
     class Meta: 
 	    ordering = ('dagboekpost',)
@@ -98,7 +98,7 @@ class Image(models.Model):
     alltimefav = models.BooleanField("All time fav",default=False)
     desc = models.CharField(blank=True,null=True,max_length=7000)
     order = models.IntegerField(blank=True,null=True,default=1)
-    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True)
 	
     class Meta: 
 	    ordering = ('dagboekpost',)

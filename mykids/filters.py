@@ -31,7 +31,7 @@ class ImageFilter(django_filters.FilterSet):
 
 	class Meta:
 			model = Image
-			fields =  ['id','dagboekpost','fav','alltimefav','desc']
+			fields =  ['id','dagboekpost','fav','alltimefav','desc','tag']
 			filter_overrides = {
 					 models.CharField: {
                  'filter_class': django_filters.CharFilter,
