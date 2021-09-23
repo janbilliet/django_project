@@ -2,6 +2,16 @@
 {% load static %}
           
 {% block content %}
+
+
+	</head>
+	<style>
+		/* Create an active/current tablink class */
+		.tab button {
+		background-color:rgba(87, 80, 80, 0.867)d;
+							}
+	</style>
+
 <div class="row">
     <div class="col-md-9" style="margin-left: auto; margin-right: auto; width: 100px">
        
@@ -21,12 +31,10 @@
 		<div class="media-body">
 		  <div class="article-metadata">
 		  <br>
-		   <h4 class="mr-2" href="#"> {{ object.titel|default_if_none:"" }}</h4>
-			<small class="text-muted">{{object.naam}} | ID:{{object.id }} | {{ object.datum |date:"F d, Y" }} | {{ object.daglotte }} dagen | Sprong: {{ object.sprong|default_if_none:"-" }} | Mijlpaal: {{ object.mijlpaal|default_if_none:"-" }}</small><br>
-			<small class="text-muted">Lengte: {{ object.lengte|default_if_none:"-" }}  | Gewicht: {{ object.gewicht|default_if_none:"-" }} </small><br>
-			<small class="text-muted">Wakker worden: {{ object.uurvanOpstaan|date:"H:i"|default_if_none:"-"}}  | Slapen: {{ object.uurvanSlapen|date:"H:i"|default_if_none:"-" }} </small>
-
-	   
+		   <h4 class="mr-2" href="#"> {{ object.titel_lotte|default_if_none:"-" }} | {{ object.titel_merlijn|default_if_none:"-" }} </h4>
+			<small class="text-muted">ID:{{object.id }} | {{ object.datum |date:"F d, Y" }}| Mijlpaal: {{ object.mijlpaal|default_if_none:"-" }}</small><br>
+			<small class="text-muted">Merlijn: {{ object.dagmerlijn }} dagen | Lotte: {{ object.daglotte }} dagen </small>
+			<br>
 				<div>
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-update' object.id %}">Update Post</a>	
 				<a class="btn btn-secondary btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
@@ -39,18 +47,29 @@
 			    <a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>	
 			    <a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Videos</a>	
 				</div>
-				 		   <hr></hr>	
 		  </div>
-		  
+		  <hr></hr>	
 		<!-- Tab links -->
 		<div class="tab">
-		  <button class="tablinks btn btn-light btn-sm mt-1 mb-1" onclick="openCity(event, 'Image')" id="defaultOpen">Image ({{ image_list.count }})</button>
-		  <button class="tablinks btn btn-light btn-sm mt-1 mb-1" onclick="openCity(event, 'Video')">Video ({{ video_list.count }})</button>
-		</div>	
+		  <button class="tablinks btn btn-light btn-sm mt-1 mb-1" onclick="openMedia(event, 'Image')" id="defaultOpen">Image ({{ image_list.count }})</button>
+		  <button class="tablinks btn btn-light btn-sm mt-1 mb-1" onclick="openMedia(event, 'Video')">Video ({{ video_list.count }})</button>
 
+			<button class="tablinks btn btn-light btn-sm mt-1 mb-1" onclick="openTab(event, 'Lotte') ">Lotte ({{ dagboekpost_list_lotte }})</button>
+			<button class="tablinks btn btn-light btn-sm mt-1 mb-1" onclick="openTab(event, 'Merlijn')">Merlijn ({{ dagboekpost_list_merlijn }})</button>
+			</div>
 
-		<!-- Tab content -->
-		<div id="Image" class="tabcontent">
+			<!-- Tab content -->
+			<div id="Lotte" class="tabcontent">
+				<p class="article-content"><b></b>
+					{{ object.beschrijving_lotte|default_if_none:"&nbsp;" }} 
+			</div>
+			  
+			<div id="Merlijn" class="tabcontent">
+				<p class="article-content"><b></b>
+					{{ object.beschrijving_merlijn|default_if_none:"&nbsp;" }} 
+			</div>
+
+			<div id="Image" class="tabcontent">
 			    <!-- Bootstrap carousel images -->
 			<div id="container">
 			<div id="myCarousel_img" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -128,12 +147,7 @@
 			</div>
 			</div>
 		</div>
-			 	<br>
-
-
-	  <p class="article-content"><b></b><br>
-	  {{ object.beschrijving|default_if_none:"&nbsp;" }} 
- 
+   
 
 	  </p>
 	  <br>
@@ -146,7 +160,7 @@
 </div>
 
 <script>
-function openCity(evt, cityName) {
+function openMedia(evt, cityName) {
   // Declare all variables
   var i, tabcontent, tablinks;
 
@@ -171,4 +185,26 @@ function openCity(evt, cityName) {
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
 </script>
+
+
+<script>
+	function openTab(evt, name) {
+	  var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("tablinks");
+	  for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+	  document.getElementById(name).style.display = "block";
+	  evt.currentTarget.className += " active";
+	}
+ </script>
+ <script>
+	// Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen").click();
+	</script>
+
 {% endblock %}	 

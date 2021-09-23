@@ -7,61 +7,67 @@
 {% if user.is_authenticated %}
 
 {% block content %}
- <div class="row">
+<div class="row">
     <div class="col-md-12">
-				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myKids ({{ dagboek_list.count }})</h3>	
+				<h3 class="mr-2" color="grey" style="font-weight: bolder;text-align:left;color:#3d3b3b"> myKids ({{ dagboek_list.count }}) </h3>	
 				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'mykids-create' %}">New day</a>
 				<a class="btn btn-warning btn-sm mt-1 mb-1" href="{% url 'milestone_add' %}">New milestone</a>				
 				<a class="btn btn-info btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>	
 				<a class="btn btn-info btn-sm" href="{% url 'mykids-video-upload' %}">Upload Video</a>							
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-image' %}">Images</a>				
-				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>					
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>						
 				<hr></hr>	<!-- #horizontal line --> 
-				<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:white;color:grey;border-color:grey">Filters</a>		
-				<br><br>
+
+				
+		
+
+	<a class="btn btn-secondary btn-sm mt-1 mb-1" onclick="toggleFilters()" style="background-color:white;color:grey;border-color:grey">Filters</a>
+	<br><br>
 					<div id="filter_div" style="display:normal"> 
 				<div class="">
 				<fieldset class="form-group">	
 					<form method="get" >
 					<div class="row">	
-					<div class="col">			  
-						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.id.label_tag }}
-						  {% render_field filter.form.id class="form-control" style="font-size:12px"%}
-						</div>
-					</div>	
 					<div class="col">		
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
 						  {{ filter.form.favpost.label_tag }}
 						  {% render_field filter.form.favpost class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
-					<div class="col">		
+					<div class="col">	
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.tag.label_tag }}
-						  {% render_field filter.form.tag class="form-control" style="font-size:12px"%}
+						  {{ filter.form.beschrijving_lotte.label_tag  }}
+						  {% render_field filter.form.beschrijving_lotte class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.titel_lotte.label_tag  }}
+						  {% render_field filter.form.titel_lotte class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+
 					</div>
 					<div class="row">	
-					<div class="col">	
-						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.beschrijving.label_tag  }}
-						  {% render_field filter.form.beschrijving class="form-control" style="font-size:12px"%}
-						</div>
-					</div>
-					<div class="col">	
-						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.titel.label_tag }}
-						  {% render_field filter.form.titel class="form-control" style="font-size:12px"%}
-						</div>
-					</div>
 					<div class="col">						
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.mijlpaal.label_tag }}
-						  {% render_field filter.form.mijlpaal class="form-control" style="font-size:12px"%}
+							{{ filter.form.mijlpaal.label_tag }}
+							{% render_field filter.form.mijlpaal class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.beschrijving_merlijn.label_tag  }}
+						  {% render_field filter.form.beschrijving_merlijn class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+					<div class="col">	
+						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+						  {{ filter.form.titel_merlijn.label_tag }}
+						  {% render_field filter.form.titel_merlijn class="form-control" style="font-size:12px"%}
+						</div>
+					</div>
+
 					</div>
 				<button type="submit" class="btn btn-light btn-sm" style="background-color:lightgrey; color:black">Search</button>
 				<a class="btn btn-light btn-sm" href="{% url 'mykids-home-list' %}"  style="background-color:lightgrey; color:black">Remove filters</a>
@@ -101,44 +107,49 @@
 					</div>
 
 	<br>	
-	{% for dagboekposts in dagboekposts %}
-			
-
-			{% if dagboekposts.beschrijving is None %}
-
-			{% elif dagboekposts.favpost == 0 and dagboekposts.tag_id == 1 %}				
-			<article class="media content-section" style="background-color: #ecf2f9;border-color:#8cb3d9;border-width: 0.01ex">
-			  <div class="media-body" >
-				<div class="article-metadata">			
-				   <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}" color="grey">{{ dagboekposts.titel|default_if_none:"" }}</a></h5>
-				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}"> {{ dagboekposts.naam}} | ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.daglotte }} dagen </a>
-				</div>
-				 <p class="article-content">{{ dagboekposts.beschrijving|default_if_none:""|truncatewords:50}}</p>
-			  </div>
-			</article>
-			
-			{% elif dagboekposts.favpost == 0 and dagboekposts.tag_id == 2 %}				
-			<article class="media content-section" style="background-color: #ecf2f9;border-color:#8cb3d9;border-width: 0.01ex">
-			  <div class="media-body" >
-				<div class="article-metadata">			
-				   <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}" color="grey">{{ dagboekposts.titel|default_if_none:"" }}</a></h5>
-				 <a class="text-muted" href="{% url 'mykids-detail' dagboekposts.id %}"> {{ dagboekposts.naam}} | ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.daglotte }} dagen </a>
-				</div>
-				 <p class="article-content">{{ dagboekposts.beschrijving|default_if_none:""|truncatewords:50}}</p>
-			  </div>
-			</article>	
-			
-			{% else %}			
+	{% for dagboekposts in dagboekposts %}		
+			{% if dagboekposts.beschrijving_lotte is not None and dagboekposts.beschrijving_merlijn is not None%}	
 			<article class="media content-section" style="background-color: #F5ECCE; border-color: orange";">
+				<div class="media-body" >
+				  <div class="article-metadata">			
+					 <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}">{{ dagboekposts.titel_lotte|default_if_none:"" }} </a></h5>
+				   <a class="text-muted"> Lotte | ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.daglotte }} dagen</a>
+				  </div>
+				   <p class="article-content">{{ dagboekposts.beschrijving_lotte|default_if_none:""|truncatewords:50}}</p>
+				</div>
+			  </article>	
+			  <article class="media content-section" style="background-color: #eff7f1; border-color: rgba(8, 121, 96, 0.288)";">
+				<div class="media-body" >
+				  <div class="article-metadata">			
+					 <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}">{{ dagboekposts.titel_merlijn|default_if_none:"" }} </a></h5>
+				   <a class="text-muted"> Merlijn | ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.dagmerlijn }} dagen</a>
+				  </div>
+				   <p class="article-content">{{ dagboekposts.beschrijving_merlijn|default_if_none:""|truncatewords:50}}</p>
+				</div>
+			  </article>			  
+			
+			{% elif dagboekposts.beschrijving_lotte is not None %}		
+			<article class="media content-section" style="background-color: #F5ECCE; border-color: orange";">
+
+				<div class="media-body" >
+				  <div class="article-metadata">			
+					 <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}">{{ dagboekposts.titel_lotte|default_if_none:"" }} </a></h5>
+				   <a class="text-muted"> Lotte | ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.daglotte }} dagen</a>
+				  </div>
+				   <p class="article-content">{{ dagboekposts.beschrijving_lotte|default_if_none:""|truncatewords:50}}</p>
+				</div>
+			</article>		
+
+			{% elif dagboekposts.beschrijving_merlijn is not None %}
+			<article class="media content-section" style="background-color: #eff7f1; border-color: rgba(8, 121, 96, 0.288)";">
 			  <div class="media-body" >
 				<div class="article-metadata">			
-				   <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}">{{ dagboekposts.titel|default_if_none:"" }}</a></h5>
-				 <a class="text-muted"> {{ dagboekposts.naam }} | ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.daglotte }} dagen</a>
+				   <h5><a class="article-title" href="{% url 'mykids-detail' dagboekposts.id %}">{{ dagboekposts.titel_merlijn|default_if_none:"" }}</a></h5>
+				 <a class="text-muted"> Merlijn| ID: {{ dagboekposts.id }} | {{ dagboekposts.datum|date:"F d, Y" }} | {{ dagboekposts.dagmerlijn }} dagen</a>
 				</div>
-				 <p class="article-content">{{ dagboekposts.beschrijving|default_if_none:""|truncatewords:50}}</p>
+				 <p class="article-content">{{ dagboekposts.beschrijving_merlijn|default_if_none:""|truncatewords:50}}</p>
 			  </div>
 			</article>
-			
 			{% endif %}
 
 	{% endfor %}

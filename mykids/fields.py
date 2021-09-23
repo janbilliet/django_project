@@ -1,24 +1,21 @@
-from .models import DagboekPost, Image, Video
+from .models import DagboekPost, Image, Video, Rating
 from django import forms
-
-MijlpaalList = DagboekPost.objects.values_list('mijlpaal','mijlpaal').distinct().order_by('mijlpaal')
-TitelList = DagboekPost.objects.values_list('titel','titel').distinct().order_by('titel')
 
 class PostForm(forms.ModelForm):
     beschrijving = forms.CharField(widget=forms.Textarea)
 
     class Meta:
         model = DagboekPost
-        fields = ['id','datum','titel', 'mijlpaal','sprong','titel','beschrijving','favpost','tag']
+        fields = ['id','datum','titel_lotte', 'titel_merlijn', 'mijlpaal', 'mijlpaal_merlijn','beschrijving_lotte','beschrijving_merlijn','favpost']
 		
 class ImageForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['img','favimage','dagboekpost','tag']
+        fields = ['img','rating','dagboekpost','imglotte','imgmerlijn','imgpapa','imgmama']
 		
 class VideoForm(forms.ModelForm):
 
     class Meta:
         model = Video
-        fields = ['vid','favvideo','dagboekpost','tag']
+        fields = ['vid','rating','dagboekpost','vidlotte','vidmerlijn','vidpapa','vidmama']

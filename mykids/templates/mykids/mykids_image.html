@@ -12,7 +12,8 @@
 				<a class="btn btn-warning btn-sm" href="{% url 'mykids-image-upload' %}">Upload Image</a>						
 				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-home-list' %}">Journal</a>				
 				<a class="btn btn-secondary btn-sm" href="{% url 'carousel-image' %}">Carousel</a>		
-				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>					
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-video' %}">Video</a>			
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'mykids-home-list' %}">All posts</a>				
 				<hr></hr>	<!-- #horizontal line --> 						
 
 	<h4 class="article-title" color="grey">  </h4>
@@ -25,43 +26,50 @@
 					<div class="row">	
 					<div class="col">			  
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.id.label_tag }}
-						  {% render_field filter.form.id class="form-control" style="font-size:12px"%}
+						  {{ filter.form.dagboekpost.label_tag }}
+						  {% render_field filter.form.dagboekpost class="form-control" style="font-size:12px"%}
 						</div>
 					</div>	
 					<div class="col">		
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.fav.label_tag }}
-						  {% render_field filter.form.fav class="form-control" style="font-size:12px"%}
+						  {{ filter.form.rating.label_tag }}
+						  {% render_field filter.form.rating class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
-					<div class="col">		
-						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.alltimefav.label_tag }}
-						  {% render_field filter.form.alltimefav class="form-control" style="font-size:12px"%}
-						</div>
-					</div>
-					</div>
-					<div class="row">	
 					<div class="col">	
 						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
 						  {{ filter.form.desc.label_tag  }}
 						  {% render_field filter.form.desc class="form-control" style="font-size:12px"%}
 						</div>
 					</div>
-					<div class="col">	
-						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.dagboekpost.label_tag }}
-						  {% render_field filter.form.dagboekpost class="form-control" style="font-size:12px"%}
+					</div>
+					<div class="row">	
+						<div class="col">			  
+							<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+							  {{ filter.form.imglotte.label_tag }}
+							  {% render_field filter.form.imglotte class="form-control" style="font-size:12px"%}
+							</div>
+						</div>	
+						<div class="col">		
+							<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+							  {{ filter.form.imgmerlijn.label_tag }}
+							  {% render_field filter.form.imgmerlijn class="form-control" style="font-size:12px"%}
+							</div>
 						</div>
-					</div>
-					<div class="col">						
-						<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
-						  {{ filter.form.tag.label_tag }}
-						  {% render_field filter.form.tag class="form-control" style="font-size:12px"%}
+						<div class="col">		
+							<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+							  {{ filter.form.imgmama.label_tag }}
+							  {% render_field filter.form.imgmama class="form-control" style="font-size:12px"%}
+							</div>
 						</div>
-					</div>
-					</div>
+						<div class="col">	
+							<div class="form-group col-sm-15 col-md-15" style="font-size:12px">
+							  {{ filter.form.imgpapa.label_tag  }}
+							  {% render_field filter.form.imgpapa class="form-control" style="font-size:12px"%}
+							</div>
+						</div>
+						</div>
+					
 				<button type="submit" class="btn btn-light btn-sm" style="background-color:lightgrey; color:black">Search</button>
 				<a class="btn btn-light btn-sm" href="{% url 'mykids-image' %}"  style="background-color:lightgrey; color:black">Remove filters</a>
 

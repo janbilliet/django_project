@@ -165,13 +165,11 @@ class ImageFieldView(FormView):
         if form.is_valid():
             desc = form.cleaned_data['desc']
             dagboekpost = form.cleaned_data['dagboekpost']
-            fav = form.cleaned_data['fav']
-            alltimefav = form.cleaned_data['alltimefav']
-            tag = form.cleaned_data['tag']
+            rating = form.cleaned_data['rating']
             i=0
             for f in files:
                 i+=1
-                instance = Image(img=f,dagboekpost=dagboekpost,order=i,desc=desc,tag=tag,alltimefav=alltimefav,fav=fav)
+                instance = Image(img=f,dagboekpost=dagboekpost,order=i,desc=desc,rating=rating)
                 instance.save()    
             return redirect(self.success_url)
         else:
@@ -212,7 +210,9 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context.update({
 				'image_list':Image.objects.filter(dagboekpost_id=self.object.id).order_by('order'),
-				'video_list':Video.objects.filter(dagboekpost_id=self.object.id).order_by('order'),				
+				'video_list':Video.objects.filter(dagboekpost_id=self.object.id).order_by('order'),			
+				'dagboekpost_list_lotte':DagboekPost.objects.filter(id=self.object.id).filter(beschrijving_lotte__isnull=False).count(),		
+				'dagboekpost_list_merlijn':DagboekPost.objects.filter(id=self.object.id).filter(beschrijving_merlijn__isnull=False).count(),	                
 				})
         return context
 		
@@ -302,47 +302,6 @@ class VideoDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
         return True
 
-def showchart(request):
-    register_matplotlib_converters() #function unknown
-    yearsFmt = mdates.DateFormatter('%Y')
-    conn = sqlite3.connect("db.sqlite3")
-    df = pd.read_sql_query("select datum,uurvanSlapen,uurvanOpstaan,nachtflesjes from mykids_dagboekpost;", conn)
-	
-	#transform data
-    df = df[df.uurvanOpstaan != 'NULL']
-    df = df[df.uurvanSlapen != 'NULL']
-    df = df.dropna()
-    df['uurvanOpstaan'] = df['uurvanOpstaan'].str.replace("u", ":")
-    df['uurvanSlapen'] = df['uurvanSlapen'].str.replace("u", ":")
-    df['uurvanOpstaan'] = np.where(df.uurvanOpstaan.str.contains('-'), '2019-04-22' + ' ' + df['uurvanOpstaan'].str[10:], '2019-04-22' + ' ' +  df['uurvanOpstaan'] + ':00')
-    df['uurvanSlapen'] = np.where(df.uurvanSlapen.str.contains('-'), '2019-04-22' + ' ' + df['uurvanSlapen'].str[10:], '2019-04-22' + ' ' +  df['uurvanSlapen'] + ':00')
-
-    df['datum']= pd.to_datetime(df['datum'])
-    df['uurvanOpstaan']= pd.to_datetime(df['uurvanOpstaan'])
-    df['uurvanSlapen']= pd.to_datetime(df['uurvanSlapen'])
-		
-	#plot data
-    fig, (ax1,ax2) = plt.subplots(2, sharex=False,gridspec_kw={'height_ratios': [6, 1]}) # 2 subplots, share x axis, different height size
-    fig.set_size_inches(w=11,h=7)
-    ax1.plot(df.datum,df.uurvanOpstaan,'s',  markersize=3) #scatter plot
-    ax1.plot(df.datum,df.uurvanSlapen,'s',  markersize=3)  #scatter plot
-    ax1.set(xlabel='', ylabel='',title='Evolutie uur van opstaan & gaan slapen')
-    ax1.yaxis.set_major_formatter(DateFormatter('%H:%M'))
-    ax1.set_ylim([pd.to_datetime('2019-04-22 00:00:00'), pd.to_datetime('2019-04-22 23:00:00')])
-    ax1.set_xlim(left=pd.to_datetime('2019-09-01 00:00:00'))
-    ax1.grid(axis='y',color='lightgrey')
-    ticks = ['22-04-2019 00:00:00','22-04-2019 04:00:00','22-04-2019 05:00:00','22-04-2019 06:00:00','22-04-2019 07:00:00','22-04-2019 08:00:00','22-04-2019 16:00:00','22-04-2019 17:00:00','22-04-2019 18:00:00','22-04-2019 19:00:00','22-04-2019 20:00:00','22-04-2019 21:00:00']
-    ax1.set_yticks(ticks)
-    ax2.plot(df.datum,df.nachtflesjes,'s',  markersize=2, c='grey')
-	
-	#display chart
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png')
-    buf.seek(0)
-    string = base64.b64encode(buf.read())
-    uri = urllib.parse.quote(string)
-    return render(request,'mykids/chart_evolutie.html',{'data':uri})		
-	
 def carousel_random_video(request): 
 			dagboekposts = Video.objects.select_related('dagboekpost').order_by('?').all()[:10]
 			context = {	
@@ -358,7 +317,7 @@ def carousel_recent_video(request):
 			return render(request, 'mykids/video_carousel.html', context)		
 		
 def carousel_favourite_video(request): 
-			dagboekposts = Video.objects.select_related('dagboekpost').filter(fav=1).order_by('?').all()[:10]
+			dagboekposts = Video.objects.select_related('dagboekpost').filter(rating=3).order_by('?').all()[:10]
 			context = {	
 				'dagboekposts': dagboekposts,
 			}
@@ -367,8 +326,8 @@ def carousel_favourite_video(request):
 def carousel_image(request): 
 			dagboekposts_recent = Image.objects.select_related('dagboekpost').order_by('dagboekpost').all()[:25]
 			dagboekposts_random = Image.objects.select_related('dagboekpost').order_by('?').all()[:25]
-			dagboekposts_favourite = Image.objects.select_related('dagboekpost').filter(fav=1).order_by('?').all()[:25]
-			dagboekposts_alltime_favourite = Image.objects.select_related('dagboekpost').filter(alltimefav=1).order_by('?').all()[:25]			
+			dagboekposts_favourite = Image.objects.select_related('dagboekpost').filter(rating=2).order_by('?').all()[:25]
+			dagboekposts_alltime_favourite = Image.objects.select_related('dagboekpost').filter(rating=3).order_by('?').all()[:25]			
 			context = {	
 				'dagboekposts_recent': dagboekposts_recent,
 				'dagboekposts_random': dagboekposts_random,
